@@ -1,36 +1,34 @@
-import { useContext } from 'react'
 import WaitingGif from '../../components/WaitingGif'
-import { LoadContext, FavoriteContext, CategoryNameContext, ProductItemContext } from '../../Context'
 import { useNavigate } from 'react-router';
 import { FaHeart } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { changeIsFav, removeFromFavBox, setCategoryName, setProductItem } from '../../redux/clothesSlice';
 
 export default function Favorites() {
-    const { loading, setLoading } = useContext(LoadContext)
-    const { favorite, setFavorite } = useContext(FavoriteContext)
-    const { categoryName, setCategoryName } = useContext(CategoryNameContext)
-    const { productItem, setProductItem } = useContext(ProductItemContext)
+    const dispatch = useDispatch()
+    const { pending, favoriteBox } = useSelector(state => state.clothes)
     const navigate = useNavigate();
 
     function itemInfo(item) {
-        setCategoryName(item.category)
-        setProductItem(item)
+        console.log(item);
+        dispatch(setCategoryName(item.category))
+        dispatch(setProductItem(item))
         navigate(`/product_item/${item.id}`)
     }
 
     function removeFromFavorites(id) {
-        const filtered = favorite.filter(item => item.id !== id)
-        setFavorite(filtered)
+        dispatch(changeIsFav(id))
+        dispatch(removeFromFavBox(id))
     }
-    console.log(favorite.length)
 
     return (
-        favorite.length > 0 ?
+        favoriteBox.length > 0 ?
             <section className="clothes-home clothes-home-favorites">
                 <div className="container">
                     <h1 className="title">Favorites List</h1>
                     <div className="clothes clothes-favorite">
-                        {loading ? <WaitingGif /> : (
-                            favorite?.map(item => {
+                        {pending ? <WaitingGif /> : (
+                            favoriteBox?.map(item => {
                                 const { id, images, name, price, category, brand, desc, favorite } = item
                                 return (
                                     <div key={id} className="clothes__item">
@@ -43,7 +41,10 @@ export default function Favorites() {
                                                         <i onClick={() => itemInfo(item)}
                                                             className="far fa-search">
                                                         </i>
-                                                        <i onClick={() => removeFromFavorites(id)} className="filled-heart"><FaHeart /></i>
+                                                        <i
+                                                            onClick={() => removeFromFavorites(id)} className="filled-heart">
+                                                            <FaHeart />
+                                                        </i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -66,6 +67,7 @@ export default function Favorites() {
                         )}
                     </div>
                 </div>
-            </section> : <h1 className='title' style={{textAlign:'center'}}>empty list</h1>
+            </section> :
+            <h1 className='title' style={{ textAlign: 'center' }}>empty list</h1>
     )
 }

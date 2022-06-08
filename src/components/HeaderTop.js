@@ -1,19 +1,17 @@
-import { useContext } from "react";
 import { useNavigate } from 'react-router';
-import { BasketContext, DataContext } from "../Context";
 import logo from '../assets/images/logos.png'
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export default function HeaderTop() {
+    const { basket } = useSelector(state => state.clothes)
     const navigate = useNavigate();
-    const { getData, setGetData } = useContext(DataContext)
-    const { basket, setBasket } = useContext(BasketContext)
 
-    function goHome(){
+    function goHome() {
         navigate("/")
     }
 
-    function myBasket(){
+    function myBasket() {
         navigate("/basket")
     }
 
@@ -36,23 +34,23 @@ export default function HeaderTop() {
             <div className="header_top-right">
                 <div className="sign">
                     <Link to="/sign-in">
-                        <i className="far fa-user"></i> 
+                        <i className="far fa-user"></i>
                         <span>Account</span>
                     </Link>
                 </div>
                 <div className="sign">
                     <Link to="/favorites">
-                        <i className="far fa-heart"></i> 
+                        <i className="far fa-heart"></i>
                         <span>Favorites</span>
-                    </Link>                    
+                    </Link>
                 </div>
                 <div onClick={myBasket} className="home-shop-card">
-                    <i className="far fa-shopping-cart shop-card"></i>     
+                    <i className="far fa-shopping-cart shop-card"></i>
                     <span>Basket</span>
                     {basket.length > 0 && <span className='shop-counter'>{basket.length}</span>}
-                </div>               
+                </div>
             </div>
         </div>
-        
+
     )
 }

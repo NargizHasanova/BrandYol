@@ -5,7 +5,7 @@ export default function Basket() {
     const clothes = useSelector(state => state.clothes)
 
     const totalCardPrice = clothes.basket.reduce((acc, item) => {
-        return item.totalSum + acc
+        return (item.count * item.price) + acc
     }, 0)
 
     return (

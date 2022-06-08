@@ -2,7 +2,7 @@ import EmptyBasket from "./EmptyBasket"
 import { Modal, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromBasket } from '../../redux/clothesSlice';
+import { decreaseProductItemCount, increaseProductItemCount, removeFromBasket } from '../../redux/clothesSlice';
 
 export default function BasketItem() {
     const dispatch = useDispatch()
@@ -27,27 +27,11 @@ export default function BasketItem() {
     }
 
     function plusCount(id) {
-        // setBasket(
-        //     basket.map(item => {
-        //         if (item.id === id) {
-        //             item.count += 1
-        //             item.totalSum = item.count * item.price
-        //         }
-        //         return item
-        //     })
-        // )
+        dispatch(increaseProductItemCount(id))
     }
 
     function minusCount(id) {
-        // setBasket(
-        //     basket.map(item => {
-        //         if (item.id === id && item.count > 1) {
-        //             item.count -= 1
-        //             item.totalSum = item.count * item.price
-        //         }
-        //         return item
-        //     })
-        // )
+        dispatch(decreaseProductItemCount(id))
     }
 
     return (
@@ -60,11 +44,18 @@ export default function BasketItem() {
                             <img src={images[0]} alt={category} />
                         </div>
                         <div className="basket-item-desc">
-                            <div className="basket-item-name"><strong>Product:</strong> {name}</div>
-                            <div className="basket-item-color"><strong>Color:</strong>
-                                <span className="basket-item-color-span" style={{ background: color }} ></span>
+                            <div className="basket-item-name">
+                                <strong>Product:</strong> {name}</div>
+                            <div className="basket-item-color">
+                                <strong>Color:</strong>
+                                <span
+                                    className="basket-item-color-span"
+                                    style={{ background: color }} >
+                                </span>
                             </div>
-                            <div className="basket-item-size"><strong>Size:</strong> {size}</div>
+                            <div className="basket-item-size">
+                                <strong>Size:</strong> {size}
+                            </div>
                         </div>
                         <div className="basket-item-price">
                             <div className="basket-item-count">

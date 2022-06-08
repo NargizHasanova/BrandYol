@@ -571,7 +571,9 @@ export default function ProductItem({
                                 : <span
                                     className='fontawesome-span'
                                     onClick={removeFromFavorites}>
-                                    <i className='colored-heart'><FontAwesomeIcon icon={faHeart} /></i>Added to Wishlist
+                                    <i className='colored-heart'>
+                                        <FontAwesomeIcon icon={faHeart} />
+                                    </i>Added to Wishlist
                                 </span>}
                         </span>
 

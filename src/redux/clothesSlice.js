@@ -75,6 +75,12 @@ export const clothesSlice = createSlice({
                 }
                 return item
             })
+            state.favoriteBox.map(item => {
+                if (item.id === payload) {
+                    item.favorite = !item.favorite
+                }
+                return item
+            })
         },
         addToFavBox: (state, { payload }) => {
             state.favoriteBox = [...new Set([...state.favoriteBox, payload])]
@@ -88,15 +94,26 @@ export const clothesSlice = createSlice({
         hideBar: (state) => {
             state.filterBarIsVisible = false
         },
-        increaseProductItemCount: (state) => {
+        increaseProductItemCount: (state, { payload }) => {
             state.productItem.count = state.productItem.count + 1
+            state.basket.map(item => {
+                if (item.id === payload) {
+                    item.count += 1
+                }
+                return item
+            })
         },
-        decreaseProductItemCount: (state) => {
+        decreaseProductItemCount: (state, { payload }) => {
             if (state.productItem.count > 1) {
                 state.productItem.count = state.productItem.count - 1
+                state.basket.map(item => {
+                    if (item.id === payload) {
+                        item.count -= 1
+                    }
+                    return item
+                })
             }
         },
-
     },
     extraReducers: {
         [fetchClothesData.pending]: (state) => {
