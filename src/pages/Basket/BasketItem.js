@@ -1,0 +1,88 @@
+import EmptyBasket from "./EmptyBasket"
+import { Modal, Button } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFromBasket } from '../../redux/clothesSlice';
+
+export default function BasketItem() {
+    const dispatch = useDispatch()
+    const { basket } = useSelector(state => state.clothes)
+    // const { setBasket } = useContext(BasketContext)
+    const { confirm } = Modal;
+
+    function showPromiseConfirm(id) {
+        confirm({
+            title: 'Do you want to delete this item?',
+            icon: <ExclamationCircleOutlined />,
+            // content: 'When clicked the OK button, this dialog will be closed after 1 second',
+            onOk() {
+                dispatch(removeFromBasket(id))
+
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 700);
+                }).catch(() => console.log('Oops errors!'));
+            },
+            onCancel() { },
+        });
+    }
+
+    function plusCount(id) {
+        // setBasket(
+        //     basket.map(item => {
+        //         if (item.id === id) {
+        //             item.count += 1
+        //             item.totalSum = item.count * item.price
+        //         }
+        //         return item
+        //     })
+        // )
+    }
+
+    function minusCount(id) {
+        // setBasket(
+        //     basket.map(item => {
+        //         if (item.id === id && item.count > 1) {
+        //             item.count -= 1
+        //             item.totalSum = item.count * item.price
+        //         }
+        //         return item
+        //     })
+        // )
+    }
+
+    return (
+        basket.length > 0 ? (
+            basket.map(item => {
+                const { id, images, category, name, price, size, color, count } = item
+                return (
+                    <div key={id} className='basket-item'>
+                        <div className="basket-item-img">
+                            <img src={images[0]} alt={category} />
+                        </div>
+                        <div className="basket-item-desc">
+                            <div className="basket-item-name"><strong>Product:</strong> {name}</div>
+                            <div className="basket-item-color"><strong>Color:</strong>
+                                <span className="basket-item-color-span" style={{ background: color }} ></span>
+                            </div>
+                            <div className="basket-item-size"><strong>Size:</strong> {size}</div>
+                        </div>
+                        <div className="basket-item-price">
+                            <div className="basket-item-count">
+                                <span onClick={() => minusCount(id)} className="minus">-</span>
+                                <span className="item-count">{count}</span>
+                                <span onClick={() => plusCount(id)} className="plus">+</span>
+                            </div>
+                            <div className="basket-item-total-price">$ {price * count}</div>
+                            <button className="basket-item-trash">
+                                <Button onClick={() => showPromiseConfirm(id)}>
+                                    <i className="fal fa-trash-alt"></i>
+                                </Button>
+                            </button>
+                        </div>
+                    </div>
+                )
+            })
+
+        ) : <EmptyBasket />
+    )
+}
