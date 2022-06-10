@@ -7,7 +7,6 @@ import { decreaseProductItemCount, increaseProductItemCount, removeFromBasket } 
 export default function BasketItem() {
     const dispatch = useDispatch()
     const { basket } = useSelector(state => state.clothes)
-    // const { setBasket } = useContext(BasketContext)
     const { confirm } = Modal;
 
     function showPromiseConfirm(id) {
@@ -35,45 +34,44 @@ export default function BasketItem() {
     }
 
     return (
-        basket.length > 0 ? (
-            basket.map(item => {
-                const { id, images, category, name, price, size, color, count } = item
-                return (
-                    <div key={id} className='basket-item'>
-                        <div className="basket-item-img">
-                            <img src={images[0]} alt={category} />
+        basket.map(item => {
+            const { id, images, category, name, price, size, color, count } = item
+            return (
+                <div key={id} className='basket-item'>
+                    <div className="basket-item-img">
+                        <img src={images[0]} alt={category} />
+                    </div>
+                    <div className="basket-item-desc">
+                        <div className="basket-item-name">
+                            <strong>Product:</strong> {name}</div>
+                        <div className="basket-item-color">
+                            <strong>Color:</strong>
+                            <span
+                                className="basket-item-color-span"
+                                style={{ background: color }} >
+                            </span>
                         </div>
-                        <div className="basket-item-desc">
-                            <div className="basket-item-name">
-                                <strong>Product:</strong> {name}</div>
-                            <div className="basket-item-color">
-                                <strong>Color:</strong>
-                                <span
-                                    className="basket-item-color-span"
-                                    style={{ background: color }} >
-                                </span>
-                            </div>
-                            <div className="basket-item-size">
-                                <strong>Size:</strong> {size}
-                            </div>
-                        </div>
-                        <div className="basket-item-price">
-                            <div className="basket-item-count">
-                                <span onClick={() => minusCount(id)} className="minus">-</span>
-                                <span className="item-count">{count}</span>
-                                <span onClick={() => plusCount(id)} className="plus">+</span>
-                            </div>
-                            <div className="basket-item-total-price">$ {price * count}</div>
-                            <button className="basket-item-trash">
-                                <Button onClick={() => showPromiseConfirm(id)}>
-                                    <i className="fal fa-trash-alt"></i>
-                                </Button>
-                            </button>
+                        <div className="basket-item-size">
+                            <strong>Size:</strong> {size}
                         </div>
                     </div>
-                )
-            })
+                    <div className="basket-item-price">
+                        <div className="basket-item-count">
+                            <span onClick={() => minusCount(id)} className="minus">-</span>
+                            <span className="item-count">{count}</span>
+                            <span onClick={() => plusCount(id)} className="plus">+</span>
+                        </div>
+                        <div className="basket-item-total-price">$ {price * count}</div>
+                        <div className="basket-item-trash">
+                            <Button onClick={() => showPromiseConfirm(id)}>
+                                <i className="fal fa-trash-alt"></i>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )
+        })
 
-        ) : <EmptyBasket />
+
     )
 }

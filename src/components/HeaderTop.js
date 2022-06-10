@@ -11,7 +11,7 @@ export default function HeaderTop() {
         navigate("/")
     }
 
-    function myBasket() {
+    function goToBasketPage() {
         navigate("/basket")
     }
 
@@ -44,7 +44,7 @@ export default function HeaderTop() {
                         <span>Favorites</span>
                     </Link>
                 </div>
-                <div onClick={myBasket} className="home-shop-card">
+                <div onClick={goToBasketPage} className="home-shop-card">
                     <i className="far fa-shopping-cart shop-card"></i>
                     <span>Basket</span>
                     {basket.length > 0 && <span className='shop-counter'>{basket.length}</span>}

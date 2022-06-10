@@ -1,25 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router';
-import { useContext } from "react";
-import { DataContext } from "../Context";
-import { Axios } from '../servicesAPI';
 import logo from '../assets/images/logos.png'
 
 export default function Footer() {
-    const { getData, setGetData } = useContext(DataContext)
-    const navigate = useNavigate();
-    async function goHome() {
-        const { data } = await Axios.get("/clothes.json")
-        setGetData(data)
-        navigate("/")
-    }
     return (
         <section className="footer container">
             <div className="footer-left">
-                <div onClick={goHome} className="logo">
+                <Link to="/" className="logo">
                     <img src={logo} alt="" />
-                </div>
+                </Link>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit sed, exercitationem numquam velit repudiandae at ex voluptatum vitae sequi possimus alias nobis, inventore asperiores aliquam aliquid vel fugiat voluptate voluptatibus.</p>
                 <div className="footer-social">
                     <i className="fab fa-facebook"></i>
@@ -52,7 +41,7 @@ export default function Footer() {
                     <span><i className="far fa-phone-alt"></i>+1 234 56 78</span>
                 </div>
                 <div className="footer-mail">
-                    <span><i className="far fa-envelope"></i>contact@lama.dev</span>
+                    <span><i className="far fa-envelope"></i>contact@brandyol.com</span>
                 </div>
                 <div className="footer-paycards">
                     <img src="https://i.ibb.co/Qfvn4z6/payment.png" alt="" />

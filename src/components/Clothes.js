@@ -3,39 +3,35 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import WaitingGif from './WaitingGif'
 import { useDispatch, useSelector } from "react-redux";
-import { changeIsFav, setCategoryName, addToFavBox, setProductItem, removeFromFavBox } from "../redux/clothesSlice";
+import { setFavoriteInFavBoxToTrue, changeIsFav, setCategoryName, addToFavBox, setProductItem, removeFromFavBox, showMoreClothesItems, showLessClothesItems } from "../redux/clothesSlice";
 
 export default function Clothes() {
     const dispatch = useDispatch()
     const clothes = useSelector(state => state.clothes)
-    const [numOfItem, setNumOfItem] = useState(10)
-    const [showMore, setShowMore] = useState(false)
     const [homePageClothes, setHomePageClothes] = useState([])
     const navigate = useNavigate();
     //setHomePageClothes -a getdata birbasa dusmurdu deye useeffect yaratdim
     useEffect(() => {
-        setHomePageClothes(clothes.data?.slice(0, numOfItem))
-    }, [clothes.data, numOfItem]);
+        setHomePageClothes(clothes.data?.slice(0, clothes.numOfItem))
+    }, [clothes.data, clothes.numOfItem]);
 
     function itemInfo(item) {
         dispatch(setCategoryName(item.category))
         dispatch(setProductItem(item))
         navigate(`product_item/${item.id}`)
     }
-
     function showMoreFoo() {
-        setShowMore(prev => !prev)
-        setNumOfItem(20)
+        dispatch(showMoreClothesItems())
     }
 
     function showLessFoo() {
-        setShowMore(prev => !prev)
-        setNumOfItem(10)
+        dispatch(showLessClothesItems())
     }
 
     function addToFavorites(id, singleItem) {
         dispatch(changeIsFav(id))
         dispatch(addToFavBox(singleItem))
+        dispatch(setFavoriteInFavBoxToTrue())
     }
 
     function removeFromFavorites(id) {
@@ -64,9 +60,13 @@ export default function Clothes() {
                                                     className="far fa-search">
                                                 </i>
                                                 {!favorite &&
-                                                    <i onClick={() => addToFavorites(id, item)} className="fas fa-heart"></i>}
+                                                    <i onClick={() => addToFavorites(id, item)}
+                                                        className="fas fa-heart">
+                                                    </i>}
                                                 {favorite &&
-                                                    <i onClick={() => removeFromFavorites(id)} className="filled-heart"><FaHeart /></i>}
+                                                    <i onClick={() => removeFromFavorites(id)}
+                                                        className="filled-heart"><FaHeart />
+                                                    </i>}
                                             </div>
                                         </div>
                                     </div>
@@ -89,12 +89,13 @@ export default function Clothes() {
                     }
                 </div>
             </div>
-            {!showMore
-                ? <div className="show-more" onClick={showMoreFoo}>
+            {homePageClothes.length !== clothes.data.length &&
+                <div className="show-more" onClick={showMoreFoo}>
                     Show More
                     <i className="fas fa-chevron-down"></i>
-                </div>
-                : <div className="show-more" onClick={showLessFoo}>
+                </div>}
+            {homePageClothes.length === clothes.data.length &&
+                <div className="show-more" onClick={showLessFoo}>
                     Show Less
                     <i className="fas fa-chevron-up"></i>
                 </div>}

@@ -20,9 +20,7 @@ export const clothesSlice = createSlice({
         categoryName: "",
         productItem: {},
         favorite: false,
-        color: "",
-        size: "",
-        count: 1,
+        numOfItem: 10,
         filterBarIsVisible: false,
         pending: false,
         error: false
@@ -36,6 +34,12 @@ export const clothesSlice = createSlice({
         },
         setProductItem: (state, { payload } = state.productItem) => {
             state.productItem = payload
+        },
+        showMoreClothesItems: (state) => {
+            state.numOfItem = state.numOfItem + 10
+        },
+        showLessClothesItems: (state) => {
+            state.numOfItem = state.numOfItem - 10
         },
         setProductItemColor: (state, { payload }) => {
             state.productItem.color = payload
@@ -75,15 +79,16 @@ export const clothesSlice = createSlice({
                 }
                 return item
             })
-            state.favoriteBox.map(item => {
-                if (item.id === payload) {
-                    item.favorite = !item.favorite
-                }
-                return item
-            })
         },
         addToFavBox: (state, { payload }) => {
+            console.log(state.favoriteBox);
             state.favoriteBox = [...new Set([...state.favoriteBox, payload])]
+        },
+        setFavoriteInFavBoxToTrue: (state) => {
+            state.favoriteBox.map(item => {
+                item.favorite = true
+                return item
+            })
         },
         removeFromFavBox: (state, { payload }) => {
             state.favoriteBox = state.favoriteBox.filter(item => item.id !== payload)
@@ -134,7 +139,7 @@ export const clothesSlice = createSlice({
 })
 
 
-export const { removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
+export const { showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
 export default clothesSlice.reducer
 
 

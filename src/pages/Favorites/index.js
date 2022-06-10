@@ -8,6 +8,7 @@ export default function Favorites() {
     const dispatch = useDispatch()
     const { pending, favoriteBox } = useSelector(state => state.clothes)
     const navigate = useNavigate();
+    console.log(favoriteBox);
 
     function itemInfo(item) {
         console.log(item);
