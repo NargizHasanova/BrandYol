@@ -49,7 +49,6 @@ export default function Products() {
                             </div>
                             <div className="female-option">
                                 <input
-
                                     className='chkbox'
                                     type="checkbox"
                                     name='gender'
@@ -63,7 +62,6 @@ export default function Products() {
                                     type="checkbox"
                                     name="gender"
                                     value='child'
-
                                 />
                                 <span>child</span>
                             </div>

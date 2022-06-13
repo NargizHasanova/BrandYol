@@ -66,7 +66,7 @@ export default function HeaderBtm() {
 
    function selectCategory(category) {
       dispatch(setFilteredProducts(category))
-      dispatch(setCategoryName())
+      dispatch(setCategoryName(category))
       navigate("products")
    }
 

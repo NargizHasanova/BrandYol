@@ -119,6 +119,9 @@ export const clothesSlice = createSlice({
                 })
             }
         },
+        filterGender: (state, { payload }) => {
+
+        }
     },
     extraReducers: {
         [fetchClothesData.pending]: (state) => {
@@ -139,7 +142,7 @@ export const clothesSlice = createSlice({
 })
 
 
-export const { showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
+export const { filterGender,showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
 export default clothesSlice.reducer
 
 
