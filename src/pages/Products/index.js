@@ -6,11 +6,11 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { showBar, hideBar } from '../../redux/clothesSlice'
+import { addFilterGender, showBar, hideBar, filterGender } from '../../redux/clothesSlice'
 
 export default function Products() {
     const dispatch = useDispatch()
-    const { productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
+    const { genderBox,filterCombiner, productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
     const [rotateArrowGender, setRotateArrowGender] = useState(true)
     const [rotateArrowBrand, setRotateArrowBrand] = useState(true)
     const [rotateArrowPrice, setRotateArrowPrice] = useState(true)
@@ -23,6 +23,13 @@ export default function Products() {
         dispatch(hideBar())
     }
 
+    function filterClothes(e) {
+        dispatch(filterGender({ [e.target.value]: e.target.checked }))
+        dispatch(addFilterGender())
+    }
+    console.log(genderBox);
+    console.log(filterCombiner);
+    console.log(productsPageClothes);
     return (
         <section className='products container'>
             <h3 className="search_results">{productsPageClothes.length} results are listed for the search "{categoryName}"</h3>
@@ -44,6 +51,7 @@ export default function Products() {
                                     type="checkbox"
                                     name='gender'
                                     value='male'
+                                    onChange={filterClothes}
                                 />
                                 <span>male</span>
                             </div>
@@ -53,6 +61,7 @@ export default function Products() {
                                     type="checkbox"
                                     name='gender'
                                     value='female'
+                                    onChange={filterClothes}
                                 />
                                 <span>female</span>
                             </div>
@@ -62,6 +71,7 @@ export default function Products() {
                                     type="checkbox"
                                     name="gender"
                                     value='child'
+                                    onChange={filterClothes}
                                 />
                                 <span>child</span>
                             </div>
