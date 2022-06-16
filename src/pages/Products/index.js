@@ -6,11 +6,11 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFilterGender, showBar, hideBar, filterGender } from '../../redux/clothesSlice'
+import { renderFilter, showBar, hideBar, filterGender, filterBrand, filterPrice } from '../../redux/clothesSlice'
 
 export default function Products() {
     const dispatch = useDispatch()
-    const { genderBox,filterCombiner, productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
+    const { genderFilterBox, filterItemIdBox, filterCombiner, productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
     const [rotateArrowGender, setRotateArrowGender] = useState(true)
     const [rotateArrowBrand, setRotateArrowBrand] = useState(true)
     const [rotateArrowPrice, setRotateArrowPrice] = useState(true)
@@ -23,13 +23,20 @@ export default function Products() {
         dispatch(hideBar())
     }
 
-    function filterClothes(e) {
+    function filterClothesByGender(e) {
         dispatch(filterGender({ [e.target.value]: e.target.checked }))
-        dispatch(addFilterGender())
+        dispatch(renderFilter())
     }
-    console.log(genderBox);
+
+    function filterClothesByBrand(e) {
+        dispatch(filterBrand({ [e.target.value]: e.target.checked }))
+        dispatch(renderFilter())
+    }
+
+    console.log(genderFilterBox);
     console.log(filterCombiner);
     console.log(productsPageClothes);
+    console.log(filterItemIdBox);
     return (
         <section className='products container'>
             <h3 className="search_results">{productsPageClothes.length} results are listed for the search "{categoryName}"</h3>
@@ -51,7 +58,7 @@ export default function Products() {
                                     type="checkbox"
                                     name='gender'
                                     value='male'
-                                    onChange={filterClothes}
+                                    onChange={filterClothesByGender}
                                 />
                                 <span>male</span>
                             </div>
@@ -61,7 +68,7 @@ export default function Products() {
                                     type="checkbox"
                                     name='gender'
                                     value='female'
-                                    onChange={filterClothes}
+                                    onChange={filterClothesByGender}
                                 />
                                 <span>female</span>
                             </div>
@@ -71,7 +78,7 @@ export default function Products() {
                                     type="checkbox"
                                     name="gender"
                                     value='child'
-                                    onChange={filterClothes}
+                                    onChange={filterClothesByGender}
                                 />
                                 <span>child</span>
                             </div>
@@ -83,7 +90,7 @@ export default function Products() {
                             <i className={`far fa-chevron-down ${rotateArrowBrand ? "rotate180" : "rotate0"}`}></i>
                         </div>
                         <div className={`option ${rotateArrowBrand ? "d-block" : "d-none"}`}>
-                            <Brand />
+                            <Brand filterClothesByBrand={filterClothesByBrand} />
                         </div>
                     </div>
                     <div className="filterItem">
@@ -107,8 +114,7 @@ export default function Products() {
                                     className='chkbox'
                                     type="checkbox"
                                     name='price'
-                                    value="50$-150$"
-
+                                    value="50"
                                 />
                                 <span>50$-150$</span>
                             </div>
@@ -117,8 +123,7 @@ export default function Products() {
                                     className='chkbox'
                                     type="checkbox"
                                     name='price'
-                                    value="150$-350$"
-
+                                    value="150"
                                 />
                                 <span>150$-350$</span>
                             </div>
@@ -127,8 +132,7 @@ export default function Products() {
                                     className='chkbox'
                                     type="checkbox"
                                     name='price'
-                                    value="350$-2250$"
-
+                                    value="350"
                                 />
                                 <span>350$-2250$</span>
                             </div>

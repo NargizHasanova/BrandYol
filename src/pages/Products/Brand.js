@@ -50,7 +50,7 @@ const brandName = [
     { brand: "Poppins" },
 ]
 
-export default function Brand() {
+export default function Brand({filterClothesByBrand}) {
     const [brandValue, setBrandValue] = useState("")
     return (
         <>
@@ -68,6 +68,8 @@ export default function Brand() {
                                     name="brand"
                                     className='chkbox'
                                     type="checkbox"
+                                    value={item.brand}
+                                    onChange={filterClothesByBrand}
                                 />
                                 <span>{item.brand}</span>
                             </div>

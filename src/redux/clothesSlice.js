@@ -16,11 +16,16 @@ export const clothesSlice = createSlice({
         favoriteBox: [],
         productsPageClothes: [],
         basket: [],
-        filterCombiner: [],
+        filterGenderCombiner: [],
+        filterBrandCombiner: [],
+        filterPriceCombiner: [],
+        filterItemIdBox: [],
         loading: true,
         categoryName: "",
         productItem: {},
-        genderBox: {},
+        genderFilterObj: {},
+        priceFilterObj: {},
+        brandFilterObj: {},
         favorite: false,
         numOfItem: 10,
         filterBarIsVisible: false,
@@ -121,27 +126,120 @@ export const clothesSlice = createSlice({
                 })
             }
         },
-        filterGender: (state, { payload }) => {
-            state.productsPageClothes = [] 
-            state.genderBox = { ...state.genderBox, ...payload }
+        filterPrice: (state, { payload }) => {
 
-            for (let key in state.genderBox) {
-                if (state.genderBox[key] === true) {
-                    state.filterCombiner.push(key)
+        },
+        filterBrand: (state, { payload }) => {
+            state.brandFilterObj = { ...state.brandFilterObj, ...payload }
+            // { mavi:true, bershka:false }
+            for (let key in state.brandFilterObj) {
+                if (state.brandFilterObj[key] === true) {
+                    state.filterBrandCombiner.push(key)
                 } else {
-                    state.filterCombiner.splice(state.filterCombiner.indexOf(key), 1)
+                    state.filterBrandCombiner.splice(state.filterBrandCombiner.indexOf(key), 1)
                 }
             }
-            state.filterCombiner = [...new Set(state.filterCombiner)]
+            state.filterGenderCombiner = [...new Set(state.filterGenderCombiner)]
         },
-        addFilterGender: (state) => {
-            for (let gender of state.filterCombiner) {
-                console.log(gender);
+        filterGender: (state, { payload }) => {
+            state.genderFilterObj = { ...state.genderFilterObj, ...payload }
+            // { male:true, female:true, child:false }
+            for (let key in state.genderFilterObj) {
+                if (state.genderFilterObj[key] === true) {
+                    state.filterGenderCombiner.push(key)
+                } else {
+                    state.filterGenderCombiner.splice(state.filterGenderCombiner.indexOf(key), 1)
+                }
+            }
+            state.filterGenderCombiner = [...new Set(state.filterGenderCombiner)] // her defe yeni true olanlar ust uste yazilmasin deye(["male","male","female"]) ve productsPageClothesdaki kimi sifirlaya bilmirik deye bele unikal deyerleri qaytaririq (["male","female"]) 
+        },
+        renderFilter: (state) => {
+            // filterCombiner = ["female","male"]
+            // if no filterItem checked
+            if (state.filterBrandCombiner.length === 0 &&
+                state.filterGenderCombiner.length === 0 &&
+                state.filterPriceCombiner.length === 0
+            ) {
+                state.productsPageClothes = state.data.filter(item => item.category === state.categoryName)
+                return
+            }
+
+
+            state.data.map(item => {
+                if (Object.keys(state.genderFilterObj).length > 0 &&
+                    Object.keys(state.brandFilterObj).length === 0 &&
+                    Object.keys(state.priceFilterObj).length === 0) {
+                    if (item.gender === filterItem &&
+                        item.category === state.categoryName) {
+                        state.filterItemIdBox.push(item.id)
+                    }
+                }
+                if (Object.keys(state.genderFilterObj).length === 0 &&
+                    Object.keys(state.brandFilterObj).length > 0 &&
+                    Object.keys(state.priceFilterObj).length === 0) {
+                    if (item.brand === filterItem &&
+                        item.category === state.categoryName) {
+                        state.filterItemIdBox.push(item.id)
+                    }
+                }
+                if (Object.keys(state.genderFilterObj).length === 0 &&
+                    Object.keys(state.brandFilterObj).length === 0 &&
+                    Object.keys(state.priceFilterObj).length > 0) {
+                    if (item.price === filterItem &&
+                        item.category === state.categoryName) {
+                        state.filterItemIdBox.push(item.id)
+                    }
+                }
+                if (Object.keys(state.genderFilterObj).length > 0 &&
+                    Object.keys(state.brandFilterObj).length > 0 &&
+                    Object.keys(state.priceFilterObj).length === 0) {
+                    console.log('1');//["male","Mavi"]
+                    // if (item.gender === filterItem &&
+                    //     item.brand === filterItem &&
+                    //     item.category === state.categoryName) {
+                    //         console.log('2');
+                    //     state.filterItemIdBox.push(item.id)
+                    // }
+                    if (Object.values(item).includes(filterItem) && item.category === state.categoryName) {
+                        console.log('2');
+                        state.filterItemIdBox.push(item.id)
+                    }
+                }
+                if (Object.keys(state.genderFilterObj).length === 0 &&
+                    Object.keys(state.brandFilterObj).length > 0 &&
+                    Object.keys(state.priceFilterObj).length > 0) {
+                    if (item.price === filterItem &&
+                        item.brand === filterItem &&
+                        item.category === state.categoryName) {
+                        state.filterItemIdBox.push(item.id)
+                    }
+                }
+                if (Object.keys(state.genderFilterObj).length > 0 &&
+                    Object.keys(state.brandFilterObj).length === 0 &&
+                    Object.keys(state.priceFilterObj).length > 0) {
+                    if (item.price === filterItem &&
+                        item.gender === filterItem &&
+                        item.category === state.categoryName) {
+                        state.filterItemIdBox.push(item.id)
+                    }
+                }
+                return item
+            });
+
+            state.filterItemIdBox = [...new Set(state.filterItemIdBox)]
+
+            // state.productsPageClothes = [] // deyeri sifirlayiriq ve yeniden yaziriq
+            state.productsPageClothes = []
+
+            for (let filterId of state.filterItemIdBox) {
                 state.productsPageClothes = [
                     ...state.productsPageClothes,
-                    ...state.data.filter(item => item.gender === gender && item.category === state.categoryName)
+                    ...state.data.filter(item => item.id === filterId && item.category === state.categoryName)
                 ]
             }
+            state.filterItemIdBox = []
+
+            // for dongusu ancaq sonuncu deyeri qaytarmasin deye ...state.productsPageClothes bele yaziriq
         }
     },
     extraReducers: {
@@ -163,7 +261,7 @@ export const clothesSlice = createSlice({
 })
 
 
-export const { addFilterGender, filterGender, showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
+export const { renderFilter, filterBrand, filterPrice, filterGender, showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
 export default clothesSlice.reducer
 
 
