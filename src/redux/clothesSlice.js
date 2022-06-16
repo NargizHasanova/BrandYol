@@ -166,66 +166,55 @@ export const clothesSlice = createSlice({
 
 
             state.data.map(item => {
-                if (Object.keys(state.genderFilterObj).length > 0 &&
-                    Object.keys(state.brandFilterObj).length === 0 &&
-                    Object.keys(state.priceFilterObj).length === 0) {
-                    if (item.gender === filterItem &&
-                        item.category === state.categoryName) {
+                if (state.filterGenderCombiner.length > 0 &&
+                    state.filterBrandCombiner.length === 0 &&
+                    state.filterPriceCombiner.length === 0) {
+                    if (state.filterGenderCombiner.includes(item.gender)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
-                if (Object.keys(state.genderFilterObj).length === 0 &&
-                    Object.keys(state.brandFilterObj).length > 0 &&
-                    Object.keys(state.priceFilterObj).length === 0) {
-                    if (item.brand === filterItem &&
-                        item.category === state.categoryName) {
+                if (state.filterGenderCombiner.length === 0 &&
+                    state.filterBrandCombiner.length > 0 &&
+                    state.filterPriceCombiner.length === 0) {
+                    if (state.filterBrandCombiner.includes(item.brand)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
-                if (Object.keys(state.genderFilterObj).length === 0 &&
-                    Object.keys(state.brandFilterObj).length === 0 &&
-                    Object.keys(state.priceFilterObj).length > 0) {
-                    if (item.price === filterItem &&
-                        item.category === state.categoryName) {
+                if (state.filterGenderCombiner.length === 0 &&
+                    state.filterBrandCombiner.length === 0 &&
+                    state.filterPriceCombiner.length > 0) {
+                    if (state.filterPriceCombiner.includes(item.price)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
-                if (Object.keys(state.genderFilterObj).length > 0 &&
-                    Object.keys(state.brandFilterObj).length > 0 &&
-                    Object.keys(state.priceFilterObj).length === 0) {
-                    console.log('1');//["male","Mavi"]
-                    // if (item.gender === filterItem &&
-                    //     item.brand === filterItem &&
-                    //     item.category === state.categoryName) {
-                    //         console.log('2');
-                    //     state.filterItemIdBox.push(item.id)
-                    // }
-                    if (Object.values(item).includes(filterItem) && item.category === state.categoryName) {
-                        console.log('2');
+                if (state.filterGenderCombiner.length > 0 &&
+                    state.filterBrandCombiner.length > 0 &&
+                    state.filterPriceCombiner.length === 0) {
+                    if (state.filterGenderCombiner.includes(item.gender) &&
+                        state.filterBrandCombiner.includes(item.brand)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
-                if (Object.keys(state.genderFilterObj).length === 0 &&
-                    Object.keys(state.brandFilterObj).length > 0 &&
-                    Object.keys(state.priceFilterObj).length > 0) {
-                    if (item.price === filterItem &&
-                        item.brand === filterItem &&
-                        item.category === state.categoryName) {
+                if (state.filterGenderCombiner.length === 0 &&
+                    state.filterBrandCombiner.length > 0 &&
+                    state.filterPriceCombiner.length > 0) {
+                    if (state.filterBrandCombiner.includes(item.brand) &&
+                        state.filterPriceCombiner.includes(item.price)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
-                if (Object.keys(state.genderFilterObj).length > 0 &&
-                    Object.keys(state.brandFilterObj).length === 0 &&
-                    Object.keys(state.priceFilterObj).length > 0) {
-                    if (item.price === filterItem &&
-                        item.gender === filterItem &&
-                        item.category === state.categoryName) {
+                if (state.filterGenderCombiner.lengthh > 0 &&
+                    state.filterBrandCombiner.length === 0 &&
+                    state.filterPriceCombiner.length > 0) {
+                    if (state.filterGenderCombiner.includes(item.gender) &&
+                        state.filterPriceCombiner.includes(item.price)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
                 return item
             });
 
+            //bunsuz bir yoxla
             state.filterItemIdBox = [...new Set(state.filterItemIdBox)]
 
             // state.productsPageClothes = [] // deyeri sifirlayiriq ve yeniden yaziriq

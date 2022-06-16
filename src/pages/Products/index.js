@@ -10,7 +10,7 @@ import { renderFilter, showBar, hideBar, filterGender, filterBrand, filterPrice 
 
 export default function Products() {
     const dispatch = useDispatch()
-    const { genderFilterBox, filterItemIdBox, filterCombiner, productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
+    const { productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
     const [rotateArrowGender, setRotateArrowGender] = useState(true)
     const [rotateArrowBrand, setRotateArrowBrand] = useState(true)
     const [rotateArrowPrice, setRotateArrowPrice] = useState(true)
@@ -33,10 +33,6 @@ export default function Products() {
         dispatch(renderFilter())
     }
 
-    console.log(genderFilterBox);
-    console.log(filterCombiner);
-    console.log(productsPageClothes);
-    console.log(filterItemIdBox);
     return (
         <section className='products container'>
             <h3 className="search_results">{productsPageClothes.length} results are listed for the search "{categoryName}"</h3>

@@ -24,8 +24,7 @@ gorulecek isler:
 pay now ya basanda qeydiyyatda deyilemse sign in cixsin
 sign in olanda hesabim olmayanda giris yap yazisi olsun
 valid form ,localstorage
-filterbar
-
+basqa categoriye kecende filterler hamisi silinmelidi
 
 
  addToFavBox: (state, { payload }) => {
