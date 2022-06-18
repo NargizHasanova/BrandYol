@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch } from 'react-redux';
-import { setFilteredProducts, setCategoryName } from '../redux/clothesSlice';
+import { resetFilterBar, setFilteredProducts, setCategoryName } from '../redux/clothesSlice';
 
 // Import Swiper styles
 import "swiper/css";
@@ -67,6 +67,7 @@ export default function HeaderBtm() {
    function selectCategory(category) {
       dispatch(setFilteredProducts(category))
       dispatch(setCategoryName(category))
+      dispatch(resetFilterBar())
       navigate("products")
    }
 

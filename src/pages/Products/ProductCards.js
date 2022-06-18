@@ -14,7 +14,6 @@ export default function ProductCards() {
     function itemInfo(item) {
         dispatch(setProductItem(item))
         navigate(`/product_item/${item.id}`)
-        console.log(item);
     }
 
     function addToFavorites(id, singleItem) {

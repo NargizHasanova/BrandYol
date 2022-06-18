@@ -32,6 +32,10 @@ export default function Products() {
         dispatch(filterBrand({ [e.target.value]: e.target.checked }))
         dispatch(renderFilter())
     }
+    function filterClothesByPrice(e) {
+        dispatch(filterPrice({ [e.target.value]: e.target.checked }))
+        dispatch(renderFilter())
+    }
 
     return (
         <section className='products container'>
@@ -101,7 +105,7 @@ export default function Products() {
                                     type="checkbox"
                                     name='price'
                                     value="0$-50$"
-
+                                    onChange={filterClothesByPrice}
                                 />
                                 <span>0$-50$</span>
                             </div>
@@ -110,7 +114,8 @@ export default function Products() {
                                     className='chkbox'
                                     type="checkbox"
                                     name='price'
-                                    value="50"
+                                    value="50$-150$"
+                                    onChange={filterClothesByPrice}
                                 />
                                 <span>50$-150$</span>
                             </div>
@@ -119,7 +124,8 @@ export default function Products() {
                                     className='chkbox'
                                     type="checkbox"
                                     name='price'
-                                    value="150"
+                                    value="150$-350$"
+                                    onChange={filterClothesByPrice}
                                 />
                                 <span>150$-350$</span>
                             </div>
@@ -128,7 +134,8 @@ export default function Products() {
                                     className='chkbox'
                                     type="checkbox"
                                     name='price'
-                                    value="350"
+                                    value="350$-2250$"
+                                    onChange={filterClothesByPrice}
                                 />
                                 <span>350$-2250$</span>
                             </div>

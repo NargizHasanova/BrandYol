@@ -38,6 +38,16 @@ export const clothesSlice = createSlice({
         },
         setFilteredProducts: (state, { payload }) => {
             state.productsPageClothes = state.data.filter(item => item.category === payload)
+
+        },
+        resetFilterBar: (state) => {
+            state.filterGenderCombiner = []
+            state.filterBrandCombiner = []
+            state.filterPriceCombiner = []
+            state.filterItemIdBox = []
+            state.genderFilterObj = {}
+            state.brandFilterObj = {}
+            state.priceFilterObj = {}
         },
         setProductItem: (state, { payload } = state.productItem) => {
             state.productItem = payload
@@ -127,7 +137,16 @@ export const clothesSlice = createSlice({
             }
         },
         filterPrice: (state, { payload }) => {
-
+            state.priceFilterObj = { ...state.priceFilterObj, ...payload }
+            // { level1:true, "0$-50$":false }
+            for (let key in state.priceFilterObj) {
+                if (state.priceFilterObj[key] === true) {
+                    state.filterPriceCombiner.push(key)
+                } else {
+                    state.filterPriceCombiner.splice(state.filterPriceCombiner.indexOf(key), 1)
+                }
+            }
+            state.filterPriceCombiner = [...new Set(state.filterPriceCombiner)]
         },
         filterBrand: (state, { payload }) => {
             state.brandFilterObj = { ...state.brandFilterObj, ...payload }
@@ -139,7 +158,7 @@ export const clothesSlice = createSlice({
                     state.filterBrandCombiner.splice(state.filterBrandCombiner.indexOf(key), 1)
                 }
             }
-            state.filterGenderCombiner = [...new Set(state.filterGenderCombiner)]
+            state.filterBrandCombiner = [...new Set(state.filterBrandCombiner)]
         },
         filterGender: (state, { payload }) => {
             state.genderFilterObj = { ...state.genderFilterObj, ...payload }
@@ -167,12 +186,40 @@ export const clothesSlice = createSlice({
 
             state.data.map(item => {
                 if (state.filterGenderCombiner.length > 0 &&
+                    state.filterBrandCombiner.length > 0 &&
+                    state.filterPriceCombiner.length > 0) {
+                    if (state.filterGenderCombiner.includes(item.gender) &&
+                        state.filterBrandCombiner.includes(item.brand)) {
+                        if (state.filterPriceCombiner.includes("0$-50$")) {
+                            if (item.price > 0 && item.price <= 50) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("50$-150$")) {
+                            if (item.price > 50 && item.price <= 150) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("150$-350$")) {
+                            if (item.price > 150 && item.price <= 350) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("350$-2250$")) {
+                            if (item.price > 350 && item.price <= 2250) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                    }
+                }
+                if (state.filterGenderCombiner.length > 0 &&
                     state.filterBrandCombiner.length === 0 &&
                     state.filterPriceCombiner.length === 0) {
                     if (state.filterGenderCombiner.includes(item.gender)) {
                         state.filterItemIdBox.push(item.id)
                     }
                 }
+
                 if (state.filterGenderCombiner.length === 0 &&
                     state.filterBrandCombiner.length > 0 &&
                     state.filterPriceCombiner.length === 0) {
@@ -180,13 +227,32 @@ export const clothesSlice = createSlice({
                         state.filterItemIdBox.push(item.id)
                     }
                 }
+
                 if (state.filterGenderCombiner.length === 0 &&
                     state.filterBrandCombiner.length === 0 &&
                     state.filterPriceCombiner.length > 0) {
-                    if (state.filterPriceCombiner.includes(item.price)) {
-                        state.filterItemIdBox.push(item.id)
+                    if (state.filterPriceCombiner.includes("0$-50$")) {
+                        if (item.price > 0 && item.price <= 50) {
+                            state.filterItemIdBox.push(item.id)
+                        }
+                    }
+                    if (state.filterPriceCombiner.includes("50$-150$")) {
+                        if (item.price > 50 && item.price <= 150) {
+                            state.filterItemIdBox.push(item.id)
+                        }
+                    }
+                    if (state.filterPriceCombiner.includes("150$-350$")) {
+                        if (item.price > 150 && item.price <= 350) {
+                            state.filterItemIdBox.push(item.id)
+                        }
+                    }
+                    if (state.filterPriceCombiner.includes("350$-2250$")) {
+                        if (item.price > 350 && item.price <= 2250) {
+                            state.filterItemIdBox.push(item.id)
+                        }
                     }
                 }
+
                 if (state.filterGenderCombiner.length > 0 &&
                     state.filterBrandCombiner.length > 0 &&
                     state.filterPriceCombiner.length === 0) {
@@ -195,31 +261,69 @@ export const clothesSlice = createSlice({
                         state.filterItemIdBox.push(item.id)
                     }
                 }
+
                 if (state.filterGenderCombiner.length === 0 &&
                     state.filterBrandCombiner.length > 0 &&
                     state.filterPriceCombiner.length > 0) {
-                    if (state.filterBrandCombiner.includes(item.brand) &&
-                        state.filterPriceCombiner.includes(item.price)) {
-                        state.filterItemIdBox.push(item.id)
+                    if (state.filterBrandCombiner.includes(item.brand)) {
+                        // console.log('isleyir');
+                        if (state.filterPriceCombiner.includes("0$-50$")) {
+                            if (item.price > 0 && item.price <= 50) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("50$-150$")) {
+                            if (item.price > 50 && item.price <= 150) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("150$-350$")) {
+                            if (item.price > 150 && item.price <= 350) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("350$-2250$")) {
+                            if (item.price > 350 && item.price <= 2250) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
                     }
                 }
-                if (state.filterGenderCombiner.lengthh > 0 &&
+                if (state.filterGenderCombiner.length > 0 &&
                     state.filterBrandCombiner.length === 0 &&
                     state.filterPriceCombiner.length > 0) {
-                    if (state.filterGenderCombiner.includes(item.gender) &&
-                        state.filterPriceCombiner.includes(item.price)) {
-                        state.filterItemIdBox.push(item.id)
+                    if (state.filterGenderCombiner.includes(item.gender)) {
+                        if (state.filterPriceCombiner.includes("0$-50$")) {
+                            if (item.price > 0 && item.price <= 50) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("50$-150$")) {
+                            if (item.price > 50 && item.price <= 150) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("150$-350$")) {
+                            if (item.price > 150 && item.price <= 350) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
+                        if (state.filterPriceCombiner.includes("350$-2250$")) {
+                            if (item.price > 350 && item.price <= 2250) {
+                                state.filterItemIdBox.push(item.id)
+                            }
+                        }
                     }
                 }
                 return item
             });
 
-            //bunsuz bir yoxla
-            state.filterItemIdBox = [...new Set(state.filterItemIdBox)]
+            // state.filterItemIdBox = [...new Set(state.filterItemIdBox)]
 
-            // state.productsPageClothes = [] // deyeri sifirlayiriq ve yeniden yaziriq
+            // deyeri sifirlayiriq ve yeniden yaziriq
             state.productsPageClothes = []
 
+            // for dongusu ancaq sonuncu deyeri qaytarmasin deye ...state.productsPageClothes bele yaziriq
             for (let filterId of state.filterItemIdBox) {
                 state.productsPageClothes = [
                     ...state.productsPageClothes,
@@ -227,8 +331,6 @@ export const clothesSlice = createSlice({
                 ]
             }
             state.filterItemIdBox = []
-
-            // for dongusu ancaq sonuncu deyeri qaytarmasin deye ...state.productsPageClothes bele yaziriq
         }
     },
     extraReducers: {
@@ -250,7 +352,7 @@ export const clothesSlice = createSlice({
 })
 
 
-export const { renderFilter, filterBrand, filterPrice, filterGender, showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
+export const { resetFilterBar, renderFilter, filterBrand, filterPrice, filterGender, showMoreClothesItems, showLessClothesItems, setFavoriteInFavBoxToTrue, removeFromBasket, addToBasket, increaseProductItemCount, decreaseProductItemCount, setProductItemSize, showBar, hideBar, setFilteredProducts, setCategoryName, setProductItem, addToFavBox, removeFromFavBox, changeIsFav, setProductItemColor } = clothesSlice.actions
 export default clothesSlice.reducer
 
 
