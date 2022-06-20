@@ -10,10 +10,11 @@ import { renderFilter, showBar, hideBar, filterGender, filterBrand, filterPrice 
 
 export default function Products() {
     const dispatch = useDispatch()
-    const { productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
+    const { genderFilterObj,productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
     const [rotateArrowGender, setRotateArrowGender] = useState(true)
     const [rotateArrowBrand, setRotateArrowBrand] = useState(true)
     const [rotateArrowPrice, setRotateArrowPrice] = useState(true)
+    console.log('genderFilterObj',genderFilterObj);
 
     function showFilterBar() {
         dispatch(showBar())

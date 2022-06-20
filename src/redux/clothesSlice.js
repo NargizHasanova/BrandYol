@@ -48,6 +48,7 @@ export const clothesSlice = createSlice({
             state.genderFilterObj = {}
             state.brandFilterObj = {}
             state.priceFilterObj = {}
+            // state.data.map(item=>item.)
         },
         setProductItem: (state, { payload } = state.productItem) => {
             state.productItem = payload
@@ -138,7 +139,7 @@ export const clothesSlice = createSlice({
         },
         filterPrice: (state, { payload }) => {
             state.priceFilterObj = { ...state.priceFilterObj, ...payload }
-            // { level1:true, "0$-50$":false }
+            // { "50$-150$":true , "0$-50$":false }
             for (let key in state.priceFilterObj) {
                 if (state.priceFilterObj[key] === true) {
                     state.filterPriceCombiner.push(key)
@@ -180,6 +181,14 @@ export const clothesSlice = createSlice({
                 state.filterPriceCombiner.length === 0
             ) {
                 state.productsPageClothes = state.data.filter(item => item.category === state.categoryName)
+                // filterlerin hamsini silinnen sonra yeniden her hansisa filteri secende butun filterlerin icini resetleyirik
+                state.filterGenderCombiner = []
+                state.filterBrandCombiner = []
+                state.filterPriceCombiner = []
+                state.filterItemIdBox = []
+                state.genderFilterObj = {}
+                state.brandFilterObj = {}
+                state.priceFilterObj = {}
                 return
             }
 
@@ -347,7 +356,7 @@ export const clothesSlice = createSlice({
             console.log('rejected');
             state.error = action.error.message
             state.pending = false
-        },
+        }
     }
 })
 

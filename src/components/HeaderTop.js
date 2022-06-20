@@ -35,7 +35,8 @@ export default function HeaderTop() {
                 <div className="sign">
                     <Link to="/sign-in">
                         <i className="far fa-user"></i>
-                        <span>Account</span>
+                        {/* <span>Account</span> */}
+                        <span>Sign In</span>
                     </Link>
                 </div>
                 <div className="sign">

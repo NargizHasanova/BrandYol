@@ -1,30 +1,42 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { LockOutlined } from '@material-ui/icons';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { Link } from 'react-router-dom'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import { LockOutlined } from '@material-ui/icons'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Axios } from '../../servicesAPI'
+import { fetchUsersData, postUsersData } from '../../redux/userSlice'
+import { useDispatch } from 'react-redux';
 
-const theme = createTheme();
+const theme = createTheme()
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+  const dispatch = useDispatch()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     console.log({
+      // firstName: data.get('firstName'),
+      // lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
-  };
+    })
+
+    const signUpData = {
+      email: data.get('email'),
+      password: data.get('password'),
+    }
+
+    dispatch(postUsersData(signUpData))
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -44,7 +56,12 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -90,7 +107,9 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
                   label="I want to receive news via email."
                 />
               </Grid>
@@ -114,5 +133,5 @@ export default function SignUp() {
         </Box>
       </Container>
     </ThemeProvider>
-  );
+  )
 }

@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import userSlice, { checkUser, fetchUsersData } from '../../redux/userSlice';
 
 function Copyright(props) {
   return (
@@ -30,7 +32,10 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch()
+  const users = userSlice(state => state.users)
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
@@ -38,7 +43,19 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    
+    const signInData = {
+      email: data.get('email'),
+      password: data.get('password'),
+    }
+
+    dispatch(fetchUsersData(signInData))
+    dispatch(checkUser(signInData))
   };
+
+  console.log(users.data);
+
+
 
   return (
     <ThemeProvider theme={theme}>

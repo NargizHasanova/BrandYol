@@ -10,7 +10,7 @@ import 'antd/dist/antd.css';
 import sizeChart from '../../assets/images/size-chart.jpg'
 import { useMediaQuery } from 'react-responsive'
 import { useSelector, useDispatch } from 'react-redux';
-import { setProductItemSize, setProductItemColor, addToFavBox, changeIsFav, removeFromFavBox, increaseProductItemCount, decreaseProductItemCount } from '../../redux/clothesSlice';
+import { setProductItemSize, setProductItemColor, addToFavBox, changeIsFav, removeFromFavBox, increaseProductItemCount, decreaseProductItemCount, setFilteredProducts, setCategoryName, resetFilterBar } from '../../redux/clothesSlice';
 
 // Import Swiper styles
 import "swiper/css";
@@ -161,12 +161,19 @@ export default function ProductItem({
         dispatch(removeFromFavBox(clothes.productItem.id))
     }
 
+    function selectCategory() {
+        dispatch(setFilteredProducts(clothes.categoryName))
+        dispatch(setCategoryName(clothes.categoryName))
+        dispatch(resetFilterBar())
+        navigate("/products")
+    }
+
     return (
         <>
             <div className="path container">
                 <Link to="/" className="path-home" href="index.html">Home</Link>
                 <i className="fas fa-angle-double-right"></i>
-                <span onClick={() => navigate("/products")} className="path-home" href="index.html">{clothes.categoryName}</span>
+                <span onClick={selectCategory} className="path-home" href="index.html">{clothes.categoryName}</span>
                 <i className="fas fa-angle-double-right"></i>
                 <span className="path-productItem" href="products.html">Product</span>
             </div>
