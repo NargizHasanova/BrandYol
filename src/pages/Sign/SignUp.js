@@ -12,14 +12,22 @@ import { LockOutlined } from '@material-ui/icons'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Axios } from '../../servicesAPI'
-import { fetchUsersData, postUsersData } from '../../redux/userSlice'
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { postUsersData } from '../../redux/userSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react'
 
 const theme = createTheme()
 
 export default function SignUp() {
   const dispatch = useDispatch()
+  const users = useSelector(state => state.users)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    users.signedIn && navigate("/")
+  }, [users.signedIn]);
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)

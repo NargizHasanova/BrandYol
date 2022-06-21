@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function HeaderTop() {
     const { basket } = useSelector(state => state.clothes)
+    const { signedIn } = useSelector(state => state.users)
     const navigate = useNavigate();
 
     function goHome() {
@@ -18,6 +19,12 @@ export default function HeaderTop() {
     return (
         <div className="header_top">
             <div className="header_top-left">
+                <div onClick={goHome} className="logo">
+                    {/* <img src={logo} alt={logo} /> */}
+                    <h3 style={{fontWeight:700}}>brandyol</h3>
+                </div>
+            </div>
+            <div className="header_top-middle">
                 <select name="" id="">
                     <option value="">EN</option>
                     <option value="">RU</option>
@@ -28,15 +35,13 @@ export default function HeaderTop() {
                     <i className="far fa-search"></i>
                 </div>
             </div>
-            <div className="header_top-middle">
-                <div onClick={goHome} className="logo"><img src={logo} alt={logo} /></div>
-            </div>
+            
             <div className="header_top-right">
                 <div className="sign">
                     <Link to="/sign-in">
                         <i className="far fa-user"></i>
-                        {/* <span>Account</span> */}
-                        <span>Sign In</span>
+                        {signedIn && <span>Account</span>}
+                        {!signedIn && <span>Sign In</span>}
                     </Link>
                 </div>
                 <div className="sign">

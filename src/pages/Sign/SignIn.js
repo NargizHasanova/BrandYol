@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,8 +14,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import userSlice, { checkUser, fetchUsersData } from '../../redux/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkUser, fetchUsersData } from '../../redux/userSlice';
+import { useEffect } from 'react';
 
 function Copyright(props) {
   return (
@@ -33,7 +35,13 @@ const theme = createTheme();
 
 export default function SignIn() {
   const dispatch = useDispatch()
-  const users = userSlice(state => state.users)
+  const users = useSelector(state => state.users)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    users.signedIn && navigate("/")
+  }, [users.signedIn]);
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,19 +51,18 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
-    
+
     const signInData = {
       email: data.get('email'),
       password: data.get('password'),
     }
-
-    dispatch(fetchUsersData(signInData))
+    await dispatch(fetchUsersData(signInData))
     dispatch(checkUser(signInData))
+
   };
 
+
   console.log(users.data);
-
-
 
   return (
     <ThemeProvider theme={theme}>

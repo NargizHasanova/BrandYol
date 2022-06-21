@@ -97,11 +97,12 @@
         }
     }
 
-    &-left {
+    &-middle {
         display: flex;
         align-items: center;
         justify-content: space-between;
         grid-area: l;
+        width: 42%;
 
         @media (max-width:767px) {
             justify-content: flex-start;
@@ -120,6 +121,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            border-radius: 5px;
 
             .fa-search {
                 margin-left: -26px;
@@ -136,6 +139,7 @@
                 padding: 5.5px;
                 padding-right: 30px;
                 border: 1px solid transparent;
+                border-radius: 5px;
 
                 &:focus {
                     border: 1px solid $mainBlueColor;
@@ -157,7 +161,7 @@
         }
     }
 
-    &-middle {
+    &-left {
         grid-area: m;
         height: 100%;
 

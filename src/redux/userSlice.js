@@ -4,16 +4,14 @@ import { Axios } from '../servicesAPI';
 export const fetchUsersData = createAsyncThunk("users/fetchUsers",
     async () => {
         const { data } = await Axios.get("/brandyol-users.json")
-        console.log('getData',data);
+        console.log('getData', data);
         return data
     }
 )
 
 export const postUsersData = createAsyncThunk("users/postUsers",
-    async () => {
-        const { data } = await Axios.post("/brandyol-users.json")
-        console.log('postData',data);
-        return data
+    async (signUpData) => {
+        await Axios.post("/brandyol-users.json", signUpData)
     }
 )
 
@@ -21,14 +19,24 @@ export const userSlice = createSlice({
     name: "users",
     initialState: {
         data: [],
+        signedIn: false,
+        signedInEmail: '',
         pendingGet: false,
         pendingPost: false,
-        errorGet: false, 
-        errorPost: false, 
+        errorGet: false,
+        errorPost: false,
     },
     reducers: {
-        checkUser: () => {
-            console.log("checkuser");
+        checkUser: (state, { payload }) => {
+            state.data.map(item => {
+                if (item.email === payload.email && item.password === payload.password) {
+                    console.log('you signed In !!');
+                    state.signedIn = true
+                } else {
+                    console.log("user does not exist!");
+                }
+                return item
+            })
         }
     },
     extraReducers: {
@@ -40,7 +48,9 @@ export const userSlice = createSlice({
             console.log('fulfilled');
             state.pendingGet = false
             // burda datamiz object seklinde gelir bunu []-ye cevirmeliyik
-            state.data = payload
+            for (let key in payload) {
+                state.data = [...state.data, payload[key]]
+            }
         },
         [fetchUsersData.rejected]: (state, action) => {
             console.log('rejected');
@@ -54,6 +64,7 @@ export const userSlice = createSlice({
         [postUsersData.fulfilled]: (state) => {
             console.log('fulfilled');
             state.pendingPost = false
+            state.signedIn = true
         },
         [postUsersData.rejected]: (state, action) => {
             console.log('rejected');
