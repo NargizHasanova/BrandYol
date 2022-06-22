@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router';
 import { postUsersData } from '../../redux/userSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react'
+import { useState } from 'react'
 
 const theme = createTheme()
 
@@ -23,13 +24,91 @@ export default function SignUp() {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users)
   const navigate = useNavigate()
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  })
+  const [error, setError] = useState({
+    firstNameError: false,
+    lastNameError: false,
+    emailError: false,
+    passwordError: false,
+  })
+
+  //sil bunu sonra
+  // useEffect(() => {
+  //   users.signedIn && navigate("/")
+  // }, [users.signedIn]);
+
+  console.log(error.firstNameError);
+  console.log(error);
 
   useEffect(() => {
-    users.signedIn && navigate("/")
-  }, [users.signedIn]);
+    // if (user.firstName.trim().length <= 1 || typeof (Number(user.firstName)) === "number") {
+    //   console.log('firstName.trim().length <= 1');
+    //   setError(prev => ({ ...prev, firstNameError: true }))
+    // }
+    // if (user.firstName.trim().length > 1 ||
+    //   typeof (Number(user.firstName)) !== "number" ||
+    //   user.firstName.trim().length === 0) {
+    //   setError(prev => ({ ...prev, firstNameError: false }))
+    // }
+    // if (user.lastName.trim().length <= 1 || typeof (Number(user.lastName)) === "number") {
+    //   setError(prev => ({ ...prev, lastNameError: true }))
+    // }
+    // if (user.lastName.trim().length > 1 ||
+    //   typeof (Number(user.lastName)) !== "number" ||
+    //   user.lastName.trim().length === 0) {
+    //   setError(prev => ({ ...prev, lastNameError: false }))
+    // }
+    // if (!user.email.includes('@')) {
+    //   setError(prev => ({ ...prev, emailError: true }))
+    // }
+    // if (user.email.includes('@') || user.email.trim().length === 0) {
+    //   setError(prev => ({ ...prev, emailError: false }))
+    // }
+  }, []);
 
-  const handleSubmit = async (event) => {
+  function onInputChange(e) {
+    setUser({ ...user, [e.target.name]: e.target.value })
+  }
+
+
+  async function handleSubmit(event) {
     event.preventDefault()
+    if (user.firstName.trim().length <= 1 || typeof (Number(user.firstName)) === "number") {
+      console.log('firstName.trim().length <= 1');
+      setError(prev => ({ ...prev, firstNameError: true }))
+    }
+    if (user.firstName.trim().length > 1 ||
+      typeof (Number(user.firstName)) !== "number" ||
+      user.firstName.trim().length === 0) {
+      setError(prev => ({ ...prev, firstNameError: false }))
+    }
+    if (user.lastName.trim().length <= 1 || typeof (Number(user.lastName)) === "number") {
+      setError(prev => ({ ...prev, lastNameError: true }))
+    }
+    if (user.lastName.trim().length > 1 ||
+      typeof (Number(user.lastName)) !== "number" ||
+      user.lastName.trim().length === 0) {
+      setError(prev => ({ ...prev, lastNameError: false }))
+    }
+    if (!user.email.includes('@')) {
+      setError(prev => ({ ...prev, emailError: true }))
+    }
+    if (user.email.includes('@') || user.email.trim().length === 0) {
+      setError(prev => ({ ...prev, emailError: false }))
+    }
+    if (
+      error.firstNameError ||
+      error.lastNameError ||
+      error.emailError ||
+      error.passwordError
+    ) {
+      return
+    }
     const data = new FormData(event.currentTarget)
     console.log({
       // firstName: data.get('firstName'),
@@ -37,13 +116,12 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     })
-
     const signUpData = {
       email: data.get('email'),
       password: data.get('password'),
     }
-
     dispatch(postUsersData(signUpData))
+    navigate("/")
   }
 
   return (
@@ -73,20 +151,28 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={user.firstName}
+                  onChange={onInputChange}
+                  error={error.firstNameError}
+                  id={error.firstNameError ? "outlined-error-helper-text" : "firstName"}
+                  helperText={error.firstNameError ? "Incorrect name." : ""}
                   autoComplete="given-name"
                   name="firstName"
                   required
                   fullWidth
-                  id="firstName"
                   label="First Name"
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={user.lastName}
+                  onChange={onInputChange}
+                  error={error.lastNameError}
+                  id={error.lastNameError ? "outlined-error-helper-text" : "lastName"}
+                  helperText={error.lastNameError ? "Incorrect last name." : ""}
                   required
                   fullWidth
-                  id="lastName"
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
@@ -94,9 +180,13 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={user.email}
+                  onChange={onInputChange}
+                  error={error.emailError}
+                  id={error.emailError ? "outlined-error-helper-text" : "email"}
+                  helperText={error.emailError ? "Incorrect email." : ""}
                   required
                   fullWidth
-                  id="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
@@ -104,12 +194,16 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={user.password}
+                  onChange={onInputChange}
+                  error={error.passwordError}
+                  id={error.passwordError ? "outlined-error-helper-text" : "password"}
+                  helperText={error.passwordError ? "Incorrect password." : ""}
                   required
                   fullWidth
                   name="password"
                   label="Password"
                   type="password"
-                  id="password"
                   autoComplete="new-password"
                 />
               </Grid>

@@ -24,6 +24,7 @@ suallar:
                 return item
             }) bele dalbadal state-i deyismek olarmi?
         }
+- checkvalidationda debouncing nece edim?erroru srazu gostermesin
 
 
 gorulecek isler:

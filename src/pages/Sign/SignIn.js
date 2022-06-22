@@ -17,6 +17,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUser, fetchUsersData } from '../../redux/userSlice';
 import { useEffect } from 'react';
+import { useRef } from 'react';
+
 
 function Copyright(props) {
   return (
@@ -37,14 +39,16 @@ export default function SignIn() {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users)
   const navigate = useNavigate()
+  const emailRef = useRef()
 
   useEffect(() => {
     users.signedIn && navigate("/")
   }, [users.signedIn]);
-  
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(emailRef);
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
@@ -84,6 +88,7 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              ref={emailRef}
               margin="normal"
               required
               fullWidth
