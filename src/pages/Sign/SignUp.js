@@ -46,38 +46,6 @@ export default function SignUp() {
   console.log(error);
 
   useEffect(() => {
-    // if (user.firstName.trim().length <= 1 || typeof (Number(user.firstName)) === "number") {
-    //   console.log('firstName.trim().length <= 1');
-    //   setError(prev => ({ ...prev, firstNameError: true }))
-    // }
-    // if (user.firstName.trim().length > 1 ||
-    //   typeof (Number(user.firstName)) !== "number" ||
-    //   user.firstName.trim().length === 0) {
-    //   setError(prev => ({ ...prev, firstNameError: false }))
-    // }
-    // if (user.lastName.trim().length <= 1 || typeof (Number(user.lastName)) === "number") {
-    //   setError(prev => ({ ...prev, lastNameError: true }))
-    // }
-    // if (user.lastName.trim().length > 1 ||
-    //   typeof (Number(user.lastName)) !== "number" ||
-    //   user.lastName.trim().length === 0) {
-    //   setError(prev => ({ ...prev, lastNameError: false }))
-    // }
-    // if (!user.email.includes('@')) {
-    //   setError(prev => ({ ...prev, emailError: true }))
-    // }
-    // if (user.email.includes('@') || user.email.trim().length === 0) {
-    //   setError(prev => ({ ...prev, emailError: false }))
-    // }
-  }, []);
-
-  function onInputChange(e) {
-    setUser({ ...user, [e.target.name]: e.target.value })
-  }
-
-
-  async function handleSubmit(event) {
-    event.preventDefault()
     if (user.firstName.trim().length <= 1 || typeof (Number(user.firstName)) === "number") {
       console.log('firstName.trim().length <= 1');
       setError(prev => ({ ...prev, firstNameError: true }))
@@ -101,12 +69,28 @@ export default function SignUp() {
     if (user.email.includes('@') || user.email.trim().length === 0) {
       setError(prev => ({ ...prev, emailError: false }))
     }
+    if (user.password.trim().length < 4) {
+      setError(prev => ({ ...prev, passwordError: true }))
+    }
+    if (user.password.trim().length >= 4 || user.password.trim().length === 0) {
+      setError(prev => ({ ...prev, passwordError: false }))
+    }
+  }, [user.firstName, user.lastName, user.email, user.password]);
+
+  function onInputChange(e) {
+    setUser({ ...user, [e.target.name]: e.target.value })
+  }
+
+
+  async function handleSubmit(event) {
+    event.preventDefault()
     if (
       error.firstNameError ||
       error.lastNameError ||
       error.emailError ||
       error.passwordError
     ) {
+      console.log('kecmedi');
       return
     }
     const data = new FormData(event.currentTarget)

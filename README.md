@@ -25,6 +25,7 @@ suallar:
             }) bele dalbadal state-i deyismek olarmi?
         }
 - checkvalidationda debouncing nece edim?erroru srazu gostermesin
+-remember me klikinde hnasi funksionalliqlar yazilmalidi?
 
 
 gorulecek isler:

@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkUser, fetchUsersData } from '../../redux/userSlice';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import { useState } from 'react';
 
 
 function Copyright(props) {
@@ -40,15 +41,38 @@ export default function SignIn() {
   const users = useSelector(state => state.users)
   const navigate = useNavigate()
   const emailRef = useRef()
+  const [userName, setUserName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [userNameError, setUserNameError] = useState(false);
+  const [userLastNameError, setUserLastNameError] = useState(false);
+  const [noUser, setNoUser] = useState(true);
 
   useEffect(() => {
-    users.signedIn && navigate("/")
-  }, [users.signedIn]);
+    if (userName.trim().length === 1 || typeof (Number(userName)) === "number") {
+      setUserNameError(true)
+    }
+    if (userName.trim().length === 0 ||
+      typeof (Number(userName)) !== "number" ||
+      userName.trim().length > 1) {
+      setUserNameError(false)
+    }
+    if (userLastName.trim().length === 1 || typeof (Number(userLastName)) === "number") {
+      setUserLastNameError(true)
+    }
+    if (userLastName.trim().length === 0 ||
+      typeof (Number(userLastName)) !== "number" ||
+      userLastName.trim().length > 1) {
+      setUserLastNameError(false)
+    }
+  }, [userName, userLastName]);
 
-  
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(emailRef);
+    if (userNameError || userLastNameError) {
+      return
+    }
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
@@ -62,7 +86,7 @@ export default function SignIn() {
     }
     await dispatch(fetchUsersData(signInData))
     dispatch(checkUser(signInData))
-
+    navigate("/")
   };
 
 
@@ -88,24 +112,29 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              ref={emailRef}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              error={userNameError}
+              id={userNameError ? "outlined-error-helper-text" : "email"}
               margin="normal"
               required
               fullWidth
-              id="email"
               label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
             />
             <TextField
+              value={userLastName}
+              onChange={(e) => setUserLastName(e.target.value)}
+              error={userLastNameError}
+              id={userLastNameError ? "outlined-error-helper-text" : "password"}
               margin="normal"
               required
               fullWidth
               name="password"
               label="Password"
               type="password"
-              id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
