@@ -10,7 +10,7 @@ import { renderFilter, showBar, hideBar, filterGender, filterBrand, filterPrice 
 
 export default function Products() {
     const dispatch = useDispatch()
-    const { genderFilterObj,productsPageClothes, categoryName, filterBarVisible } = useSelector(state => state.clothes)
+    const { genderFilterObj,productsPageClothes, categoryName, filterBarIsVisible } = useSelector(state => state.clothes)
     const [rotateArrowGender, setRotateArrowGender] = useState(true)
     const [rotateArrowBrand, setRotateArrowBrand] = useState(true)
     const [rotateArrowPrice, setRotateArrowPrice] = useState(true)
@@ -42,7 +42,7 @@ export default function Products() {
         <section className='products container'>
             <h3 className="search_results">{productsPageClothes.length} results are listed for the search "{categoryName}"</h3>
             <div className="products-wrapper">
-                <div className={`products__filterBar ${filterBarVisible ? "position-left" : ""}`}>
+                <div className={`products__filterBar ${filterBarIsVisible ? "position-left" : ""}`}>
                     <i className='filter-back' onClick={hideFilterBar}>
                         <FontAwesomeIcon icon={faArrowLeftLong} />
                     </i>
@@ -149,7 +149,7 @@ export default function Products() {
                     </i>
                 </div>
                 <div className="products-box"
-                    style={{ width: `${filterBarVisible ? "68%" : ""}` }} >
+                    style={{ width: `${filterBarIsVisible ? "68%" : ""}` }} >
                     <ProductCards />
                 </div>
             </div>

@@ -2,15 +2,24 @@ import BasketItem from './BasketItem';
 import { useSelector } from 'react-redux';
 import EmptyBasket from './EmptyBasket';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 export default function Basket() {
     const clothes = useSelector(state => state.clothes)
+    const users = useSelector(state => state.users)
+    const navigate = useNavigate()
 
     const totalCardPrice = clothes.basket.reduce((acc, item) => {
         return (item.count * item.price) + acc
     }, 0)
 
-    
+    function payOrder() {
+        if(users.signedIn === false){
+            navigate("/sign-in")
+        }else{
+            console.log("successfull payment");
+        }
+    }
 
     return (
 
@@ -39,7 +48,9 @@ export default function Basket() {
                             <p><b>Total</b></p>
                             <span><b>{totalCardPrice}$</b></span>
                         </div>
-                        <div className='btn-paycard'><button>Pay Now</button></div>
+                        <div className='btn-paycard'>
+                            <button onClick={payOrder}>Pay Now</button>
+                        </div>
                     </div>
                 </div>
             </div>

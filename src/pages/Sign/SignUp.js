@@ -81,14 +81,15 @@ export default function SignUp() {
     setUser({ ...user, [e.target.name]: e.target.value })
   }
 
-
+  console.log(user);
   async function handleSubmit(event) {
     event.preventDefault()
     if (
       error.firstNameError ||
       error.lastNameError ||
       error.emailError ||
-      error.passwordError
+      error.passwordError ||
+      Object.values(user).filter(item => item.length === 0).length > 0
     ) {
       console.log('kecmedi');
       return
@@ -142,7 +143,7 @@ export default function SignUp() {
                   helperText={error.firstNameError ? "Incorrect name." : ""}
                   autoComplete="given-name"
                   name="firstName"
-                  required
+                  required={true}
                   fullWidth
                   label="First Name"
                   autoFocus

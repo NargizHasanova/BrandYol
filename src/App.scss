@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     height: 75px;
-
+    flex-wrap: wrap;
 
     @media (max-width:450px) {
         padding: 10px 15px;
@@ -18,6 +18,10 @@
         display: grid;
         grid-template-areas: "m r""l l";
         height: auto;
+    }
+
+    @media (max-width:850px) {
+        margin-bottom: 30px;
     }
 
     &-right {
@@ -42,7 +46,7 @@
             cursor: pointer;
 
             @media (max-width:320px) {
-                margin-right: -15px;
+                margin-right: 0px;
             }
 
             a {
@@ -63,9 +67,6 @@
                 color: $mainBlueColor;
             }
 
-            // @media (max-width:620px) {
-            //     margin-right: 0;
-            // }
         }
 
         .home-shop-card {
@@ -109,6 +110,12 @@
             margin-top: 10px;
         }
 
+        @media (max-width:850px) {
+            width: 100%;
+            // display: block;
+            order: 3;
+        }
+
         select {
             background-color: transparent;
             cursor: pointer;
@@ -149,6 +156,7 @@
                     &:focus {
                         border: 1px solid transparent;
                     }
+                    padding: 0;
                 }
             }
 
@@ -1050,6 +1058,7 @@
         .vishList {
             margin-top: 30px;
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
 
             button {
@@ -1076,6 +1085,7 @@
 
             .size-shart {
                 cursor: pointer;
+                padding: 0;
 
                 &:hover {
                     color: $mainBlueColor;
@@ -1143,14 +1153,16 @@
                     font-size: 22px;
                 }
             }
-            .disabledAddToBasketBtn{
+
+            .disabledAddToBasketBtn {
                 opacity: 0.8;
                 cursor: not-allowed !important;
+
                 &:hover {
                     background-color: $mainRedColor !important;
                     margin-top: 0 !important;
                     box-shadow: none !important;
-                }        
+                }
             }
 
             .addToBasketBtn {
