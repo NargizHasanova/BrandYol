@@ -32,11 +32,16 @@ export const userSlice = createSlice({
                 if (item.email === payload.email && item.password === payload.password) {
                     console.log('you signed In !!');
                     state.signedIn = true
+                    state.signedInEmail = item.email
                 } else {
                     console.log("user does not exist!");
                 }
                 return item
             })
+        },
+        logout: (state) => {
+            state.signedIn = false
+            state.signedInEmail = ""
         }
     },
     extraReducers: {
@@ -75,5 +80,5 @@ export const userSlice = createSlice({
 })
 
 
-export const { checkUser } = userSlice.actions
+export const { checkUser, logout } = userSlice.actions
 export default userSlice.reducer

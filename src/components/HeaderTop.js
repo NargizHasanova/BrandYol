@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router';
-import logo from '../assets/images/logos.png'
+import { FaPerbyte, FaRegMoneyBillAlt } from "react-icons/fa";
+import { AiOutlineBook, AiOutlineMessage, AiOutlineLogout, AiOutlineQuestionCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../redux/userSlice';
 
 export default function HeaderTop() {
+    const dispatch = useDispatch()
     const { basket } = useSelector(state => state.clothes)
-    const { signedIn } = useSelector(state => state.users)
+    const { signedIn, signedInEmail } = useSelector(state => state.users)
     const navigate = useNavigate();
 
     function goHome() {
@@ -15,27 +18,31 @@ export default function HeaderTop() {
     function goToBasketPage() {
         navigate("/basket")
     }
+    function logOut(){
+        dispatch(logout())
+        window.location.reload()
+        navigate("/")
+    }
 
     return (
         <div className="header_top">
             <div className="header_top-left">
                 <div onClick={goHome} className="logo">
-                    {/* <img src={logo} alt={logo} /> */}
-                    <h3 style={{fontWeight:700}}>brandyol</h3>
+                    <h3 style={{ fontWeight: 700 }}>brandyol</h3>
                 </div>
             </div>
             <div className="header_top-middle">
-                <select name="" id="">
+                {/* <select name="" id="">
                     <option value="">EN</option>
                     <option value="">RU</option>
                     <option value="">AZ</option>
-                </select>
+                </select> */}
                 <div className="header-search" >
                     <input type="text" name="" id="" placeholder='search' />
                     <i className="far fa-search"></i>
                 </div>
             </div>
-            
+
             <div className="header_top-right">
                 <div className="sign">
                     <Link to="/sign-in">
@@ -43,6 +50,38 @@ export default function HeaderTop() {
                         {signedIn && <span>Account</span>}
                         {!signedIn && <span>Sign In</span>}
                     </Link>
+                    {signedIn &&
+                        <ul className='login-dropdown'>
+                            <Link to="/">
+                                <span className='mail'>{signedInEmail}</span>
+                            </Link>
+                            <Link to="/">
+                                <AiOutlineBook />
+                                <span>my orders</span>
+                            </Link>
+                            <Link to="/">
+                                <FaPerbyte />
+                                <span>my actions</span>
+                            </Link>
+                            <Link to="/">
+                                <AiOutlineMessage />
+                                <span>messages</span>
+                            </Link>
+                            <Link to="/">
+                                <FaRegMoneyBillAlt />
+                                <span>discount card</span>
+                            </Link>
+                            <Link to="/">
+                                <AiOutlineQuestionCircle />
+                                <span>questions</span>
+                            </Link>
+                            <Link to="/">
+                                <AiOutlineLogout />
+                                <span onClick={logOut}>log out</span>
+                            </Link>
+                        </ul>
+                    }
+
                 </div>
                 <div className="sign">
                     <Link to="/favorites">
