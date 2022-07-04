@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useResolvedPath } from 'react-router';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,7 +9,7 @@ import Checkbox from '@mui/material/Checkbox';
 // import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { LockOutlined } from '@material-ui/icons';
+import { LockOutlined, TrendingUpOutlined } from '@material-ui/icons';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -40,37 +40,41 @@ export default function SignIn() {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users)
   const navigate = useNavigate()
-  const emailRef = useRef()
-  const [userName, setUserName] = useState("");
-  const [userLastName, setUserLastName] = useState("");
-  const [userNameError, setUserNameError] = useState(false);
-  const [userLastNameError, setUserLastNameError] = useState(false);
-  const [noUser, setNoUser] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [userEmailError, setUserEmailError] = useState(false);
+  const [userPasswordError, setUserPasswordError] = useState(false);
 
   useEffect(() => {
-    if (userName.trim().length === 1 || typeof (Number(userName)) === "number") {
-      setUserNameError(true)
+    if (!userEmail.includes('@')) {
+      setUserEmailError(true)
     }
-    if (userName.trim().length === 0 ||
-      typeof (Number(userName)) !== "number" ||
-      userName.trim().length > 1) {
-      setUserNameError(false)
+    if (userEmail.includes('@') || userEmail.trim().length === 0) {
+      setUserEmailError(false)
     }
-    if (userLastName.trim().length === 1 || typeof (Number(userLastName)) === "number") {
-      setUserLastNameError(true)
+    if (userPassword.trim().length < 4) {
+      setUserPasswordError(true)
     }
-    if (userLastName.trim().length === 0 ||
-      typeof (Number(userLastName)) !== "number" ||
-      userLastName.trim().length > 1) {
-      setUserLastNameError(false)
+    if (userPassword.trim().length >= 4 || userPassword.trim().length === 0) {
+      setUserPasswordError(false)
     }
-  }, [userName, userLastName]);
+  }, [userEmail, userPassword]);
 
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (userNameError || userLastNameError) {
+    if (
+      userEmailError ||
+      userEmail.trim().length === 0
+    ) {
+      setUserEmailError(true)
+      return
+    }
+    if (userPasswordError ||
+      userPassword.trim().length === 0
+    ) {
+      setUserPasswordError(true)
       return
     }
     const data = new FormData(event.currentTarget);
@@ -85,8 +89,8 @@ export default function SignIn() {
       password: data.get('password'),
     }
     await dispatch(fetchUsersData(signInData))
-    dispatch(checkUser(signInData))
-    navigate("/")
+    await dispatch(checkUser(signInData))
+    // navigate("/")
   };
 
 
@@ -112,10 +116,10 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              error={userNameError}
-              id={userNameError ? "outlined-error-helper-text" : "email"}
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              error={userEmailError}
+              id={userEmailError ? "outlined-error-helper-text" : "email"}
               margin="normal"
               required
               fullWidth
@@ -125,10 +129,10 @@ export default function SignIn() {
               autoFocus
             />
             <TextField
-              value={userLastName}
-              onChange={(e) => setUserLastName(e.target.value)}
-              error={userLastNameError}
-              id={userLastNameError ? "outlined-error-helper-text" : "password"}
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
+              error={userPasswordError}
+              id={userPasswordError ? "outlined-error-helper-text" : "password"}
               margin="normal"
               required
               fullWidth

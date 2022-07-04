@@ -84,6 +84,7 @@ export default function SignUp() {
   console.log(user);
   async function handleSubmit(event) {
     event.preventDefault()
+    // bu yoxlamalari reduxa sal burda yazma
     if (
       error.firstNameError ||
       error.lastNameError ||

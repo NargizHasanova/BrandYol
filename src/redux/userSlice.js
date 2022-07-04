@@ -28,6 +28,11 @@ export const userSlice = createSlice({
     },
     reducers: {
         checkUser: (state, { payload }) => {
+            if(state.data.length === 0){
+                console.log("user does not exist!");
+                state.signedIn = false
+                return
+            }
             state.data.map(item => {
                 if (item.email === payload.email && item.password === payload.password) {
                     console.log('you signed In !!');
