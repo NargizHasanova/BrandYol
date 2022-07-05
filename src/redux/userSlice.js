@@ -19,7 +19,7 @@ export const userSlice = createSlice({
     name: "users",
     initialState: {
         data: [],
-        signedIn: false,
+        signedIn: null,
         signedInEmail: '',
         pendingGet: false,
         pendingPost: false,
@@ -39,15 +39,17 @@ export const userSlice = createSlice({
                     state.signedIn = true
                     state.signedInEmail = item.email
                 } else {
+                    state.signedIn = false
                     console.log("user does not exist!");
                 }
                 return item
             })
         },
         logout: (state) => {
-            state.signedIn = false
+            state.signedIn = null
             state.signedInEmail = ""
         }
+
     },
     extraReducers: {
         [fetchUsersData.pending]: (state) => {

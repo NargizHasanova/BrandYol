@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router';
-import { postUsersData } from '../../redux/userSlice'
+import { logout, postUsersData } from '../../redux/userSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -42,8 +42,6 @@ export default function SignUp() {
   //   users.signedIn && navigate("/")
   // }, [users.signedIn]);
 
-  console.log(error.firstNameError);
-  console.log(error);
 
   useEffect(() => {
     if (user.firstName.trim().length <= 1 || typeof (Number(user.firstName)) === "number") {
@@ -108,6 +106,10 @@ export default function SignUp() {
     }
     dispatch(postUsersData(signUpData))
     navigate("/")
+  }
+
+  function quit(){
+    dispatch(logout())
   }
 
   return (
@@ -211,7 +213,7 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
+              <Grid item onClick={quit}>
                 <Link to="/sign-in" variant="body2">
                   Already have an account? Sign in
                 </Link>

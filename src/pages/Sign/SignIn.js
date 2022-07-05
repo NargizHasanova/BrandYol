@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useNavigate, useResolvedPath } from 'react-router';
+import { useNavigate } from 'react-router';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 // import Link from '@mui/material/Link';
@@ -17,7 +18,6 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUser, fetchUsersData } from '../../redux/userSlice';
 import { useEffect } from 'react';
-import { useRef } from 'react';
 import { useState } from 'react';
 
 
@@ -90,11 +90,14 @@ export default function SignIn() {
     }
     await dispatch(fetchUsersData(signInData))
     await dispatch(checkUser(signInData))
-    // navigate("/")
+    users.signedIn && navigate("/")
   };
 
 
   console.log(users.data);
+  // useEffect(() => {
+  //   users.signedIn && navigate("/")
+  // }, [users.signedIn]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,6 +118,11 @@ export default function SignIn() {
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            {users.signedIn === false &&
+              <Alert severity="error">Wrong email/password. <br />Please try again or
+                <Link to="/sign-up" > create a new account.</Link>
+              </Alert>}
+
             <TextField
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
