@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const Axios = axios.create({
-    baseURL: "https://brendyol-default-rtdb.firebaseio.com"
+    baseURL: "https://brandyol-b1fe9-default-rtdb.firebaseio.com"
 })
 
 export {Axios}
