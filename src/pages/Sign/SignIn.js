@@ -60,6 +60,12 @@ export default function SignIn() {
     }
   }, [userEmail, userPassword]);
 
+  useEffect(() => {
+   if(users.signedIn) {
+    navigate("/")
+   }
+  }, [users.signedIn]);
+
 
 
   const handleSubmit = async (event) => {
@@ -90,7 +96,8 @@ export default function SignIn() {
     }
     await dispatch(fetchUsersData(signInData))
     await dispatch(checkUser(signInData))
-    users.signedIn && navigate("/")
+    // console.log(users.signedIn);
+    // users.signedIn && navigate("/")
   };
 
 

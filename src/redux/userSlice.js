@@ -28,7 +28,7 @@ export const userSlice = createSlice({
     },
     reducers: {
         checkUser: (state, { payload }) => {
-            if(state.data.length === 0){
+            if (state.data.length === 0) {
                 console.log("user does not exist!");
                 state.signedIn = false
                 return
@@ -44,6 +44,9 @@ export const userSlice = createSlice({
                 }
                 return item
             })
+        },
+        signUpEmail: (state, { payload }) => {
+            state.signedInEmail = payload
         },
         logout: (state) => {
             state.signedIn = null
@@ -87,5 +90,5 @@ export const userSlice = createSlice({
 })
 
 
-export const { checkUser, logout } = userSlice.actions
+export const { checkUser, logout, signUpEmail } = userSlice.actions
 export default userSlice.reducer

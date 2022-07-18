@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router';
-import { logout, postUsersData } from '../../redux/userSlice'
+import { logout, postUsersData, signUpEmail } from '../../redux/userSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -45,7 +45,6 @@ export default function SignUp() {
 
   useEffect(() => {
     if (user.firstName.trim().length <= 1 || typeof (Number(user.firstName)) === "number") {
-      console.log('firstName.trim().length <= 1');
       setError(prev => ({ ...prev, firstNameError: true }))
     }
     if (user.firstName.trim().length > 1 ||
@@ -85,11 +84,33 @@ export default function SignUp() {
     // bu yoxlamalari reduxa sal burda yazma
     if (
       error.firstNameError ||
+      user.firstName.trim().length === 0) {
+      setError(prev => ({ ...prev, firstNameError: true }))
+      return
+    }
+    if (
       error.lastNameError ||
-      error.emailError ||
-      error.passwordError ||
-      Object.values(user).filter(item => item.length === 0).length > 0
+      user.lastName.trim().length === 0
     ) {
+      setError(prev => ({ ...prev, lastNameError: true }))
+      return
+    }
+    if (
+      error.emailError ||
+      user.email.trim().length === 0
+    ) {
+      setError(prev => ({ ...prev, emailError: true }))
+      return
+    }
+    if (
+      error.passwordError ||
+      user.password.trim().length === 0
+    ) {
+      setError(prev => ({ ...prev, passwordError: true }))
+      return
+    }
+
+    if (Object.values(user).filter(item => item.length === 0).length > 0) {
       console.log('kecmedi');
       return
     }
@@ -105,10 +126,11 @@ export default function SignUp() {
       password: data.get('password'),
     }
     dispatch(postUsersData(signUpData))
+    dispatch(signUpEmail(signUpData.email))
     navigate("/")
   }
 
-  function quit(){
+  function quit() {
     dispatch(logout())
   }
 
